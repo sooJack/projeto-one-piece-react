@@ -1,122 +1,76 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { AuthProvider } from './context/AuthContext';
+import { GameProvider } from './context/GameContext';
+import Navbar from './components/Navbar';
+import Background from './components/Background';
+import PageTransition from './components/PageTransition';
+import Home from './pages/Home';
+import Cartazes from './pages/Cartazes';
+import Ranking from './pages/Ranking';
+import Conquistas from './pages/Conquistas';
+import Titulos from './pages/Titulos';
+import Mapa from './pages/Mapa';
+import Mestre from './pages/Mestre';
+import './index.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+function RouterWrapper() {
+  const location = useLocation();
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+        <Route path="/cartazes" element={<PageTransition><Cartazes /></PageTransition>} />
+        <Route path="/ranking" element={<PageTransition><Ranking /></PageTransition>} />
+        <Route path="/conquistas" element={<PageTransition><Conquistas /></PageTransition>} />
+        <Route path="/titulos" element={<PageTransition><Titulos /></PageTransition>} />
+        <Route path="/mapa" element={<PageTransition><Mapa /></PageTransition>} />
+        <Route path="/mestre" element={<PageTransition><Mestre /></PageTransition>} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </AnimatePresence>
+  );
 }
 
-export default App
+function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setLoading(false), 700);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  return (
+    <AuthProvider>
+      <GameProvider>
+        <BrowserRouter>
+          <Background />
+          <Navbar />
+          <main style={{ paddingTop: 80, minHeight: '100vh' }}>
+            <RouterWrapper />
+          </main>
+          <AnimatePresence>
+            {loading && (
+              <motion.div
+                className="loader-overlay"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.45, ease: 'easeOut' }}
+              >
+                <div className="loader-box">
+                  <div className="loader-ring" />
+                  <p>Carregando aventura...</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </BrowserRouter>
+      </GameProvider>
+    </AuthProvider>
+  );
+}
+
+export default App;
