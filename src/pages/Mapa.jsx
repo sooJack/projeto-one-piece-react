@@ -665,7 +665,7 @@ const S = {
 };
 
 // ── ADMIN PASSWORD (simples, pode trocar) ────────────────────
-const ADMIN_PASSWORD = "onepiece";
+const ADMIN_PASSWORD = "grandline2024";
 
 export default function Mapa() {
   const [points, setPoints] = useState(INITIAL_POINTS);
