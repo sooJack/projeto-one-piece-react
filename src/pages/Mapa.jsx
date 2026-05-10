@@ -683,7 +683,7 @@ export default function Mapa() {
   const mapRef = useRef(null);
 
   const handleLogin = () => {
-    if (pwInput === ADMIN_PASSWORD) {
+    if (pwInput.trim() === ADMIN_PASSWORD) {
       setIsAdmin(true);
       setPwError(false);
       setPwInput("");
