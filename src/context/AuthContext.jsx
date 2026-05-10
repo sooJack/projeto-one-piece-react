@@ -6,21 +6,25 @@ const MASTER_PASSWORD = 'grandlinde2024';
 
 export function AuthProvider({ children }) {
   const [isMaster, setIsMaster] = useState(() => {
-    return sessionStorage.getItem('op-master') === '1';
+    return localStorage.getItem('op-master') === '1';
   });
 
   const login = (password) => {
+    console.log('Tentando login com senha:', password);
+    console.log('Senha mestre esperada:', MASTER_PASSWORD);
     if (password === MASTER_PASSWORD) {
       setIsMaster(true);
-      sessionStorage.setItem('op-master', '1');
+      localStorage.setItem('op-master', '1');
+      console.log('Login bem-sucedido');
       return true;
     }
+    console.log('Login falhou');
     return false;
   };
 
   const logout = () => {
     setIsMaster(false);
-    sessionStorage.removeItem('op-master');
+    localStorage.removeItem('op-master');
   };
 
   return (
