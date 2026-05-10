@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { AuthProvider } from './context/AuthContext';
@@ -45,7 +45,7 @@ function App() {
   return (
     <AuthProvider>
       <GameProvider>
-        <BrowserRouter>
+        <HashRouter>
           <Background />
           <Navbar />
           <main style={{ paddingTop: 80, minHeight: '100vh' }}>
@@ -67,7 +67,7 @@ function App() {
               </motion.div>
             )}
           </AnimatePresence>
-        </BrowserRouter>
+        </HashRouter>
       </GameProvider>
     </AuthProvider>
   );
