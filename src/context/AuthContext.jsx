@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext(null);
 
-const MASTER_PASSWORD = import.meta.env.VITE_MASTER_PASSWORD || 'grandlinde2024';
+const MASTER_PASSWORD = import.meta.env.VITE_MASTER_PASSWORD || 'grandline2024';
 
 export function AuthProvider({ children }) {
   const [isMaster, setIsMaster] = useState(() => {
