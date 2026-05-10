@@ -664,8 +664,8 @@ const S = {
   }),
 };
 
-// ── ADMIN PASSWORD (simples, pode trocar) ────────────────────
-const ADMIN_PASSWORD = "grandline2024";
+// ── ADMIN PASSWORD (usando a mesma do AuthContext) ────────────────────
+const ADMIN_PASSWORD = import.meta.env.VITE_MASTER_PASSWORD || "grandline2024";
 
 export default function Mapa() {
   const [points, setPoints] = useState(INITIAL_POINTS);
